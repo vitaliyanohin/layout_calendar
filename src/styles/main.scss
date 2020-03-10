@@ -1,5 +1,4 @@
 $week: ("mon":0, "tue":1, "wed":2, "thu":3, "fri":4, "sat":5, "sun":6);
-$day: ("28":29, "29":30, "30":31);
 
 body {
   margin: 0;
@@ -31,16 +30,22 @@ body {
   }
 }
 
-@for $i from 1 through 31 {
-  div:nth-child(#{$i})::before {
-    content: "#{$i}";
+@for $day from 0 to 31 {
+  .calendar div:nth-child(#{$day + 1})::after {
+    content: "#{$day + 1}";
+  }
+  @if ($day >= 28) {
+    .calendar div:nth-child(#{$day + 1}) {
+      display: none;
+    }
+    .calendar-#{$day + 1} div:nth-child(#{$day + 1}) {
+      display: block;
+    }
   }
 }
 
-@each $name, $glyph in $week {
-  .calendar-#{$name} {
-    div:first-child {
-      margin-left: ($width + 1px) * $glyph;
-    }
+@each $day-name, $day-num in $week {
+  .calendar-#{$day-name} div:first-child {
+    margin-left: #{101 * $day-num}px;
   }
 }
